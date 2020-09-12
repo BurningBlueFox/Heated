@@ -20,18 +20,20 @@ namespace BurningBlueFox.Heated.Input
 
         public void Execute()
         {
-            float2 normalizedDir = math.normalize(pos[0]);
+            if(math.length(pos[0]) > 1f)
+            pos[0] = math.normalize(pos[0]);
 
-            if (math.length(normalizedDir) > deadzone)
+            float magnitude = math.length(pos[0]);
+            if (magnitude > deadzone)
             {
-                float targetAngle = math.atan2(normalizedDir.x, normalizedDir.y) + math.radians(camEulerY);
+                float targetAngle = math.atan2(pos[0].x, pos[0].y) + math.radians(camEulerY);
                 quaternion q = math.slerp(euler[0].value, quaternion.Euler(0f, targetAngle, 0f).value, deltaTime * smoothTime);
 
                 euler[0] = q;
 
                 float3 moveDir = math.forward(quaternion.Euler(0f, targetAngle, 0f));
 
-                float3 add = (moveDir * speed * deltaTime);
+                float3 add = (moveDir * speed *  magnitude * deltaTime);
                 float2 temp = pos[0];
                 temp.x = add.x;
                 temp.y = add.z;

@@ -31,11 +31,14 @@ namespace BurningBlueFox.Heated.Input
 
         public void ProcessMovement(Vector2 value)
         {
+
             euler = new NativeArray<quaternion>(1, Allocator.TempJob);
             pos = new NativeArray<float2>(1, Allocator.TempJob);
 
             pos[0] = new float2(value.x, value.y);
             euler[0] = playerTransform.rotation;
+
+            playerAnimator.SetFloat(ANIMATOR_MOVE_HASH, math.length(pos[0])); //Temporary fix while animator specific job code doesnt exist
 
             MovementJob playerMovementJob = new MovementJob()
             {
@@ -56,12 +59,10 @@ namespace BurningBlueFox.Heated.Input
 
             playerTransform.rotation = euler[0];
             Vector3 temp = new Vector3(pos[0].x, 0f, pos[0].y);
-            //playerTransform.position += temp;
-            bool moving = (math.abs(temp.x) > 0f || math.abs(temp.y) > 0f);
+            playerTransform.position += temp;
 
-            playerAnimator.SetFloat(ANIMATOR_MOVE_HASH, moving? 1f: 0f);
+            
 
-            camTransform.position += temp;
 
             euler.Dispose();
             pos.Dispose();
