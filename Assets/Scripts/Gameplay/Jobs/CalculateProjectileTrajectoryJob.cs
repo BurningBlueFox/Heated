@@ -24,7 +24,7 @@ namespace BurningBlueFox.Heated.Gameplay
             quaternion dispersion = muzzleRotation[index];
             Unity.Mathematics.Random r = random[index];
 
-            float angle = r.NextFloat(-180f, 180f);
+            float angle = r.NextFloat(0f, 360f);
             float angleCos = projectileDispersion[index] * math.cos(math.radians(angle));
             float angleSin = projectileDispersion[index] * math.sin(math.radians(angle));
 

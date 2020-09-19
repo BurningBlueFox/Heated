@@ -12,6 +12,7 @@ namespace BurningBlueFox.Heated.Input
         [SerializeField] Transform muzzleTransform = default;
         [SerializeField] LayerMask layerMask = default;
         [SerializeField][Range(0.001f, 1f)] float dispersion = 0.2f;
+        [SerializeField] GameObject bulletPrefab = default;
         private Transform playerTransform;
 
         private NativeArray<quaternion> muzzleRotation;
@@ -34,6 +35,7 @@ namespace BurningBlueFox.Heated.Input
         {
             handler.Complete();
             Debug.DrawRay(muzzleTransform.position, output[0], Color.red);
+            //GameObject.Instantiate(bulletPrefab, muzzleTransform.position,quaternion.LookRotation(output[0], Vector3.forward) , null);
         }
         private void OnEnable()
         {
